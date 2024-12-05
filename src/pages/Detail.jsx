@@ -1,17 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { todoApi } from "../api/todos";
 import { useQuery } from "@tanstack/react-query";
-
+import { getDetail } from "../api/todos";
 export default function Detail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { data, isPending, error } = useQuery({
     // 쿼리키는 동일하면 안됨. 덮어쓰기됨.
     queryKey: ["todos", id],
-    queryFn: async () => {
-      const response = await todoApi(`/todos/${id}`);
-      return response.data;
-    },
+    queryFn: getDetail,
   });
 
   if (isPending) return <div style={{ fontSize: 36 }}>로딩중...</div>;
